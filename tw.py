@@ -5,6 +5,7 @@ import saxophone
 import html
 import re
 from time import sleep
+from datetime import *
 
 
 def cut_140_chars(tweet):
@@ -68,7 +69,7 @@ def send_tweet(api, tweet):
     if tweet is None:
         return
     sleep(2)
-    print('Tweeting: ' + tweet)
+    print(str(datetime.now()) + '  TWITTER  -  Updating status: ' + tweet)
     api.update_status(tweet)
 
 
@@ -101,8 +102,8 @@ def do_stuff():
             db_insert_id(status.id, status.text)
             send_tweet(api, process_tweet(status.text))
         except db.IntegrityError:
-            print(str(status.id) + ' is already in the db.')
-
+            # Validate a tweet's existence on the database, works great :P
+            continue
 
 if __name__ == '__main__':
     do_stuff()
