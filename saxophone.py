@@ -177,11 +177,22 @@ def get_sorted_translations():
     return key_list
 
 
-def translate(phrase, method='local'):
+def translate(phrase, engine, method='local'):
     """Translate a phrase by applying a local dictionary."""
     words = phrase.split()
     translation = []
     for word in words:
+
+        if engine == 'twitter':
+            if re.match('@.*?', word):
+                # don't translate twitter account mentions
+                translation.append(word)
+                continue
+            if re.match('http://*.*', word):
+                # don't translate URLs
+                translation.append(word)
+                continue
+
         if method == 'saxophone':
             s_word = send_saxophone_request(word)
         else:
