@@ -2,4 +2,4 @@ venv
 .idea
 __pycache__
 *.db
-secrets.json
+secrets.ini

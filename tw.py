@@ -1,5 +1,5 @@
 import tweepy
-import json
+import configparser
 import sqlite3 as db
 import saxophone
 import html
@@ -36,12 +36,11 @@ def is_mention(tweet):
 
 def get_twitter_api():
     """Returns a reference to the Twitter API with the saved credentials."""
-    file = open('secrets.json', 'r')
-    secrets = json.loads(file.read())
-    file.close()
+    secrets = configparser.ConfigParser()
+    secrets.read('secrets.ini')
 
-    auth = tweepy.OAuthHandler(secrets['twitter']['consumer_key'], secrets['twitter']['consumer_secret'])
-    auth.set_access_token(secrets['twitter']['access_token'], secrets['twitter']['access_token_secret'])
+    auth = tweepy.OAuthHandler(secrets['Twitter']['consumer_key'], secrets['Twitter']['consumer_secret'])
+    auth.set_access_token(secrets['Twitter']['access_token'], secrets['Twitter']['access_token_secret'])
 
     tw_api = tweepy.API(auth)
     return tw_api
