@@ -68,7 +68,6 @@ def send_tweet(api, tweet):
     if tweet is None:
         return
     sleep(2)
-    print(str(datetime.now()) + '  TWITTER  -  Updating status: ' + tweet)
     api.update_status(tweet)
 
 
