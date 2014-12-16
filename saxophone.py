@@ -213,18 +213,20 @@ def apply_substitutions(word):
     """Apply the local dictionary to a given word."""
     word = word.lower()
     for translation in get_sorted_translations():
-        # if translation.startswith('_') and translation.endswith('_'):
-        #     regex = re.compile(r'(\W|^)%s(\W|$)' % translation[1:-1])
-        #     word = regex.sub(translation[1:-1], dict_saxlet[translation][1:-1])
-        # elif translation.startswith('_'):
-        #     regex = re.compile(r'(\W|^)%s' % translation[1:])
-        #     word = regex.sub(translation[1:], dict_saxlet[translation][1:])
-        # elif translation.endswith('_'):
-        #     regex = re.compile(r'%s(\W|$)' % translation[:-1])
-        #     word = regex.sub(translation[:-1], dict_saxlet[translation][:-1])
-        if translation in word:
+        if translation.startswith('_') and translation.endswith('_'):
+            regex = re.compile(r'(\W|^)%s(\W|$)' % translation[1:-1])
+            word = re.sub(regex, dict_saxlet[translation][1:-1], word)
+            print(word)
+        elif translation.startswith('_'):
+            regex = re.compile(r'(\W|^)%s' % translation[1:])
+            word = re.sub(regex, dict_saxlet[translation][1:], word)
+            print(word)
+        elif translation.endswith('_'):
+            regex = re.compile(r'%s(\W|$)' % translation[:-1])
+            word = re.sub(regex, dict_saxlet[translation][:-1], word)
+            print(word)
+        elif translation in word:
             word = word.replace(translation, dict_saxlet[translation])
-            # break
     return word
 
 
