@@ -177,7 +177,7 @@ def get_sorted_translations():
     return key_list
 
 
-def translate(phrase, engine, method='local'):
+def translate(phrase, engine='none', method='local'):
     """Translate a phrase by applying a local dictionary."""
     words = phrase.split()
     translation = []
@@ -188,7 +188,7 @@ def translate(phrase, engine, method='local'):
                 # don't translate twitter account mentions
                 translation.append(word)
                 continue
-            if re.match('http://*.*', word):
+            if re.match('https?://*', word):
                 # don't translate URLs
                 translation.append(word)
                 continue
