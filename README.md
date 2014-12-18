@@ -1,4 +1,4 @@
-# DU Dresden
+![banner](http://i.imgur.com/jz6qRgl.png)
 
 Die säggsische DU Dresden, erreichbar unter [du-dresden.de](http://du-dresden.de).
 
