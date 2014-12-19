@@ -3,6 +3,9 @@
 import re
 import requests
 from bs4 import BeautifulSoup
+import logging
+
+logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
 
 dict_saxlet = {
     'computer': 'gombjudor',
@@ -188,7 +191,7 @@ def translate(phrase, engine='none', method='local'):
                 # don't translate twitter account mentions
                 translation.append(word)
                 continue
-            if re.match('https?://*', word):
+            if re.match('https?://.*', word):
                 # don't translate URLs
                 translation.append(word)
                 continue
@@ -214,16 +217,20 @@ def apply_substitutions(word):
     word = word.lower()
     for translation in get_sorted_translations():
         if translation.startswith('_') and translation.endswith('_'):
-            regex = re.compile(r'(\W|^)%s(\W|$)' % translation[1:-1])
+            regex = re.compile(r'(\b)%s(\b)' % translation[1:-1])
             word = re.sub(regex, dict_saxlet[translation][1:-1], word)
+            logging.debug('replacing[full word] ' + translation + ' with ' + dict_saxlet[translation] + ' to '+ word)
         elif translation.startswith('_'):
-            regex = re.compile(r'(\W|^)%s' % translation[1:])
+            regex = re.compile(r'(\b)%s' % translation[1:])
             word = re.sub(regex, dict_saxlet[translation][1:], word)
+            logging.debug('replacing[prefix] ' + translation + ' with ' + dict_saxlet[translation] + ' to '+ word)
         elif translation.endswith('_'):
-            regex = re.compile(r'%s(\W|$)' % translation[:-1])
+            regex = re.compile(r'%s(\b)' % translation[:-1])
             word = re.sub(regex, dict_saxlet[translation][:-1], word)
+            logging.debug('replacing[suffix] ' + translation + ' with ' + dict_saxlet[translation] + ' to '+ word)
         elif translation in word:
             word = word.replace(translation, dict_saxlet[translation])
+            logging.debug('replacing[syllable] ' + translation + ' with ' + dict_saxlet[translation] + ' to '+ word)
     return word
 
 
